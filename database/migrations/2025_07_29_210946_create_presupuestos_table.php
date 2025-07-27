@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-      Schema::create('users', function (Blueprint $table) {
-    $table->id('id_usuario');
-    $table->string('nombre');
-    $table->string('email')->unique();
-    $table->string('contraseña');
-    $table->enum('rol', ['Administrador', 'Jefe de Proyecto', 'Usuario']);
+        Schema::create('presupuestos', function (Blueprint $table) {
+    $table->id('id_presupuesto');
+    $table->foreignId('id_tarea')->constrained('tareas')->onDelete('cascade');
+    $table->decimal('monto_estimado', 12, 2);
+    $table->decimal('costo_ejecutado', 12, 2)->default(0);
     $table->timestamps();
 });
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('presupuestos');
     }
 };

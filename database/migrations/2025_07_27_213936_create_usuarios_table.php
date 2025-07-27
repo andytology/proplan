@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('presupuestos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create('usuarios', function (Blueprint $table) {
+    $table->id();
+    $table->string('nombre');
+    $table->string('email')->unique();
+    $table->string('contraseña');
+    $table->enum('rol', ['Administrador', 'Jefe de Proyecto', 'Usuario']);
+    $table->timestamps();
+});
+
     }
 
     /**
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('presupuestos');
+        Schema::dropIfExists('usuarios');
     }
 };

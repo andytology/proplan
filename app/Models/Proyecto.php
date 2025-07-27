@@ -7,5 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    use HasFactory;
+    protected $table = 'proyectos';
+    protected $primaryKey = 'id_proyectos';
+    protected $fillable = ['nombre', 'descripcion', 'fecha_inicio', 'fecha_fin', 'estado'];
+
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class, 'id_proyecto');
+    }
+
+    public function reportes()
+    {
+        return $this->hasMany(Reporte::class, 'id_proyecto');
+    }
+
+    public function equipo()
+    {
+        return $this->belongsToMany(Usuario::class, 'asignaciones', 'id_proyecto', 'id_usuario')
+                    ->withPivot('rol_en_proyecto');
+    }
 }

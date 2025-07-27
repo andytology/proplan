@@ -12,16 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proyectos', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
+            $table->string('nombre');
+            $table->text('descripcion')->nullable();
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->string('estado')->default('Activo');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
-        Schema::dropIfExists('proyectos');
+        Schema::dropIfExists('proyectos'); 
     }
 };
