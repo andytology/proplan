@@ -4,26 +4,38 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Usuario extends Authenticatable
 {
+    use Notifiable;
+
     protected $table = 'usuarios';
-    protected $primaryKey = 'id_usuario';
-    protected $fillable = ['nombre', 'email', 'contraseña', 'rol'];
+    protected $primaryKey = 'id';       
+    public    $incrementing = true;
+    protected $keyType = 'int';
 
-    public function tareasAsignadas()
+    protected $fillable = [
+        'nombre',
+        'email',
+        'contraseña',
+        'rol',
+    ];
+
+    protected $hidden = [
+        'contraseña',
+        'remember_token',
+    ];
+
+    // Dile a Auth que la columna de password es `contraseña`
+    public function getAuthPassword()
     {
-        return $this->hasMany(Tarea::class, 'id_usuario');
+        return $this->attributes['contraseña'];
     }
 
-    public function asignaciones()
-    {
-        return $this->hasMany(Asignacion::class, 'id_usuario');
-    }
-
-    public function proyectos()
-    {
-        return $this->belongsToMany(Proyecto::class, 'asignaciones', 'id_usuario', 'id_proyecto')
-                    ->withPivot('rol_en_proyecto');
-    }
+    // Constantes de rol para no repetir strings
+    public const ROLE_ADMIN = 'Administrador';
+    public const ROLE_JEFE  = 'Jefe de Proyecto';
+    public const ROLE_USER  = 'Usuario';
 }
+
