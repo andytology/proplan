@@ -1,99 +1,181 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
-@section('title', 'Iniciar sesión')
+        .login-container {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 20px;
+        }
 
-@section('content')
-<div class="max-w-md mx-auto mt-12">
-    <div class="bg-white p-8 rounded-lg shadow-lg">
-        <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Iniciar sesión</h1>
+        .login-box {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
 
-        {{-- Mensaje de estado (p. ej. “Revisa tu email para restablecer contraseña”) --}}
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-remember {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            color: #155724;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .error-message {
+            color: #e3342f;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .register-text {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .register-text a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="login-box">
+        <h1 class="login-title">Iniciar sesión</h1>
+
         @if(session('status'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <div class="alert-success">
                 {{ session('status') }}
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}" class="space-y-6">
+        <form method="POST" action="{{ route('login') }}">
             @csrf
 
             {{-- Email --}}
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value="{{ old('email') }}"
-                    required
-                    autofocus
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus>
                 @error('email')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="error-message">{{ $message }}</p>
                 @enderror
             </div>
 
             {{-- Contraseña --}}
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input id="password" name="password" type="password" required>
                 @error('password')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="error-message">{{ $message }}</p>
                 @enderror
             </div>
 
             {{-- Recuérdame + Olvidé contraseña --}}
-            <div class="flex items-center justify-between">
-                <label class="inline-flex items-center">
-                    <input
-                        type="checkbox"
-                        name="remember"
-                        class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                        {{ old('remember') ? 'checked' : '' }}
-                    />
-                    <span class="ml-2 text-sm text-gray-600">Recuérdame</span>
+            <div class="form-remember">
+                <label>
+                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                    Recuérdame
                 </label>
 
                 @if (Route::has('password.request'))
-                    <a
-                        href="{{ route('password.request') }}"
-                        class="text-sm text-indigo-600 hover:text-indigo-500"
-                    >
-                        ¿Olvidaste tu contraseña?
-                    </a>
+                    <a href="{{ route('password.request') }}" class="forgot-link">¿Olvidaste tu contraseña?</a>
                 @endif
             </div>
 
-            {{-- Botón de submit --}}
-            <div>
-                <button
-                    type="submit"
-                    class="w-full flex justify-center px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow
-                           hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Iniciar sesión
-                </button>
+            {{-- Botón --}}
+            <div class="form-group">
+                <button type="submit" class="btn-submit">Iniciar sesión</button>
             </div>
         </form>
 
-        {{-- Enlace a registro --}}
-        <p class="mt-6 text-center text-sm text-gray-600">
+        <p class="register-text">
             ¿No tienes cuenta?
-            <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-500 font-medium">
-                Regístrate aquí
-            </a>.
+            <a href="{{ route('register') }}">Regístrate aquí</a>.
         </p>
     </div>
 </div>
-@endsection
+
+</body>
+</html>
 
 

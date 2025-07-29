@@ -8,17 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Proyecto extends Model
 {
     protected $table = 'proyectos';
-    protected $primaryKey = 'id_proyectos';
+    protected $primaryKey = 'id';
     protected $fillable = ['nombre', 'descripcion', 'fecha_inicio', 'fecha_fin', 'estado'];
 
     public function tareas()
     {
-        return $this->hasMany(Tarea::class, 'id_proyecto');
+        return $this->hasMany(Tarea::class, 'id');
     }
 
     public function reportes()
     {
-        return $this->hasMany(Reporte::class, 'id_proyecto');
+        return $this->hasMany(Reporte::class, 'id');
     }
 
     public function equipo()
