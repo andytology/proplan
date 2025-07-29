@@ -162,8 +162,7 @@
 </head>
 <body>
 <div class="container">
-
-    {{-- Flash messages --}}
+{{-- Flash messages --}}
     @if(session('success'))
         <div class="flash-message">
             {{ session('success') }}
@@ -188,7 +187,7 @@
         </div>
         <div class="card">
             <h3>Tareas</h3>
-            <p>--</p> {{-- Puedes mostrar el conteo cuando tengas tareas --}}
+            <p>{{ $totalTareas }}</p>
         </div>
     </div>
 
@@ -218,7 +217,6 @@
                             <td>{{ $usuario->email }}</td>
                             <td>{{ $usuario->rol }}</td>
                             <td class="actions">
-                                {{-- Acción futura (ver, editar, eliminar usuarios) --}}
                                 <a href="#" class="text-blue-600">Ver</a>
                             </td>
                         </tr>
@@ -226,6 +224,34 @@
                 </tbody>
             </table>
         </div>
+    </div>
+ {{-- Listado de tareas (opcional) --}}
+    <div class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Tareas registradas</h2>
+        <table class="min-w-full table-auto border-collapse">
+            <thead>
+                <tr class="bg-gray-100 text-gray-600 text-sm uppercase text-left">
+                    <th class="px-4 py-2">Título</th>
+                    <th class="px-4 py-2">Descripción</th>
+                    <th class="px-4 py-2">Proyecto</th>
+                    <th class="px-4 py-2">Responsable</th>
+                    <th class="px-4 py-2">Estado</th>
+                    <th class="px-4 py-2">Prioridad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($tareas as $tarea)
+                    <tr class="border-t">
+                        <td class="px-4 py-2">{{ $tarea->titulo }}</td>
+                        <td class="px-4 py-2">{{ $tarea->descripcion }}</td>
+                        <td class="px-4 py-2">{{ $tarea->proyecto->nombre ?? 'Sin proyecto' }}</td>
+                        <td class="px-4 py-2">{{ $tarea->usuario->nombre ?? 'Sin asignar' }}</td>
+                        <td class="px-4 py-2">{{ $tarea->estado }}</td>
+                        <td class="px-4 py-2">{{ $tarea->prioridad }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 
     {{-- Crear nuevo proyecto --}}
@@ -307,7 +333,6 @@
             </tbody>
         </table>
     </div>
-
 </div>
 </body>
 </html>

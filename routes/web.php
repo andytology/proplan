@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\JefeDashboardController;
+use App\Http\Controllers\UsuarioDashboardController;
+use App\Http\Controllers\TareaController;
 use App\Models\Usuario;
 
 /*
@@ -27,30 +30,42 @@ Route::get('/dashboard', function () {
         case Usuario::ROLE_ADMIN:
             return redirect()->route('admin.dashboard');
         case Usuario::ROLE_JEFE:
-            return view('jefe/dashboard');
+            return redirect()->route('jefe.dashboard');
         default:
-            return view('usuario/dashboard');
+            return redirect()->route('usuario.dashboard');
     }
-})
-->middleware(['auth', 'verified'])
-->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Rutas de perfil (Breeze)
+// Rutas protegidas para todos los roles
 Route::middleware('auth')->group(function () {
-    Route::get('/profile',   [ProfileController::class, 'edit'])->name('profile.edit');
+
+    // Perfil (Breeze)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile',[ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// RUTAS DE ADMIN (ahora solo requieren auth, control de rol se hace en controlador)
-Route::middleware('auth')->group(function () {
+    // Admin
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/proyectos', [AdminDashboardController::class, 'storeProyecto'])->name('admin.proyectos.store');
     Route::put('/admin/proyectos/{proyecto}', [AdminDashboardController::class, 'updateProyecto'])->name('admin.proyectos.update');
     Route::delete('/admin/proyectos/{proyecto}', [AdminDashboardController::class, 'destroyProyecto'])->name('admin.proyectos.destroy');
+//jefe
+    Route::get('/jefe/dashboard', [JefeDashboardController::class, 'index'])->name('jefe.dashboard');
+
+    // Usuario
+    Route::get('/usuario/dashboard', UsuarioDashboardController::class)->name('usuario.dashboard');
+
+    // CRUD de tareas (usado por el jefe en su dashboard)
+    Route::resource('tareas', TareaController::class)->except(['show'])->names([
+        'index' => 'tareas.index',
+        'create' => 'tareas.create',
+        'store' => 'tareas.store',
+        'edit' => 'tareas.edit',
+        'update' => 'tareas.update',
+        'destroy' => 'tareas.destroy',
+    ]);
 });
 
-// Rutas de autenticación Breeze
+// Rutas Breeze (login, register, etc.)
 require __DIR__.'/auth.php';
-
 

@@ -5,20 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Proyecto;
+use App\Models\Tarea;
 
 class AdminDashboardController extends Controller
 {
-    
-
     /**
-     * Mostrar el panel de administrador con usuarios y proyectos.
+     * Mostrar el panel de administrador con usuarios, proyectos y conteo de tareas.
      */
     public function index(Request $request)
     {
         $usuarios = Usuario::all();
         $proyectos = Proyecto::all();
+         $tareas = Tarea::all();
+        $totalTareas = Tarea::count();
 
-        return view('admin.dashboard', compact('usuarios', 'proyectos'));
+        return view('admin.dashboard', compact('usuarios', 'proyectos', 'tareas','totalTareas'));
     }
 
     /**
@@ -79,4 +80,3 @@ class AdminDashboardController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'Proyecto eliminado correctamente.');
     }
 }
-

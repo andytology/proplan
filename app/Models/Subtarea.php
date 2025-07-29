@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subtarea extends Model
 {
+    use HasFactory;
+
     protected $table = 'subtareas';
-    protected $primaryKey = 'id_subtarea';
+
     protected $fillable = ['id_tarea', 'titulo', 'estado'];
 
     public function tarea()
@@ -16,3 +18,4 @@ class Subtarea extends Model
         return $this->belongsTo(Tarea::class, 'id_tarea');
     }
 }
+

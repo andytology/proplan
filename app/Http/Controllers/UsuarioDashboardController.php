@@ -3,15 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Tarea;
 
 class UsuarioDashboardController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Muestra el panel del usuario con sus tareas y subtareas.
      */
     public function __invoke()
     {
-        // Aquí puedes pasar datos a la vista si lo necesitas
-        return view('usuario.dashboard');
+        $usuario = auth()->user();
+
+        // Carga las tareas del usuario con sus subtareas (si usas eager loading)
+        $tareas = Tarea::with('subtareas', 'proyecto') // puedes incluir 'proyecto' si necesitas el nombre
+                        ->where('id_usuario', $usuario->id)
+                        ->get();
+
+        return view('usuario.dashboard', compact('usuario', 'tareas'));
     }
 }
