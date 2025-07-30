@@ -6,7 +6,9 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\JefeDashboardController;
 use App\Http\Controllers\UsuarioDashboardController;
 use App\Http\Controllers\TareaController;
+use App\Http\Controllers\ReporteController;
 use App\Models\Usuario;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,10 +53,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/proyectos/{proyecto}', [AdminDashboardController::class, 'destroyProyecto'])->name('admin.proyectos.destroy');
 //jefe
     Route::get('/jefe/dashboard', [JefeDashboardController::class, 'index'])->name('jefe.dashboard');
-
+    Route::get('/jefe/reportes/carga-trabajo', [ReporteController::class, 'cargaTrabajo'])->name('reportes.carga');
+    Route::get('/jefe/reportes/semaforo', [ReporteController::class, 'semaforo'])->name('reportes.semaforo');
     // Usuario
     Route::get('/usuario/dashboard', UsuarioDashboardController::class)->name('usuario.dashboard');
-
+    Route::get('/jefe/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     // CRUD de tareas (usado por el jefe en su dashboard)
     Route::resource('tareas', TareaController::class)->except(['show'])->names([
         'index' => 'tareas.index',

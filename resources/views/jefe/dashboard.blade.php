@@ -84,6 +84,10 @@
           @endforelse
         </tbody>
       </table>
+      <a href="{{ route('reportes.index') }}" class="btn btn-dark mt-4">
+    📊 Ver Reportes del Proyecto
+</a>
+
     </div>
 
     {{-- Footer --}}
