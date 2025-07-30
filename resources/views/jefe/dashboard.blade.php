@@ -87,6 +87,15 @@
       <a href="{{ route('reportes.index') }}" class="btn btn-dark mt-4">
     📊 Ver Reportes del Proyecto
 </a>
+<div class="text-center my-4">
+    <a href="{{ route('reportes.carga.pdf') }}" class="btn btn-outline-danger me-2">
+        📥 Descargar PDF de Carga de Trabajo
+    </a>
+
+    <a href="{{ route('reportes.semaforo.pdf') }}" class="btn btn-outline-primary">
+        📥 Descargar PDF del Reporte Semáforo
+    </a>
+</div>
 
     </div>
 

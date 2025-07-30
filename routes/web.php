@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/jefe/dashboard', [JefeDashboardController::class, 'index'])->name('jefe.dashboard');
     Route::get('/jefe/reportes/carga-trabajo', [ReporteController::class, 'cargaTrabajo'])->name('reportes.carga');
     Route::get('/jefe/reportes/semaforo', [ReporteController::class, 'semaforo'])->name('reportes.semaforo');
+    Route::get('/jefe/reportes/carga-trabajo/pdf', [ReporteController::class, 'exportarCargaTrabajoPDF'])->name('reportes.carga.pdf');
+Route::get('/jefe/reportes/semaforo/pdf', [ReporteController::class, 'exportarSemaforoPDF'])->name('reportes.semaforo.pdf');
     // Usuario
     Route::get('/usuario/dashboard', UsuarioDashboardController::class)->name('usuario.dashboard');
     Route::get('/jefe/reportes', [ReporteController::class, 'index'])->name('reportes.index');
